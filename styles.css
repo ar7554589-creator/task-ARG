@@ -1,0 +1,536 @@
+:root {
+    --bg: #f7fafc;
+    --card: #fff;
+    --muted: #64748b;
+    --accent: #2563eb;
+    --danger: #dc2626;
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --excel: #217346;
+    --whatsapp: #25D366;
+    --google: #DB4437;
+    --border: #e6eef6;
+    --text: #0f172a;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, sans-serif;
+    direction: rtl;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 980px;
+    margin: 28px auto;
+    padding: 18px;
+}
+
+header {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.lead {
+    color: var(--muted);
+    font-size: 16px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 20px;
+}
+
+.card {
+    background: var(--card);
+    padding: 18px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06);
+    margin-bottom: 16px;
+}
+
+input, textarea, select, button {
+    font-family: inherit;
+    font-size: 14px;
+}
+
+input[type="text"], input[type="datetime-local"], input[type="time"], textarea, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-top: 4px;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+label {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.form-row {
+    margin-bottom: 12px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 12px;
+}
+
+.form-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+}
+
+button {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 0;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.btn-accent {
+    background: var(--accent);
+    color: #fff;
+}
+
+.btn-muted {
+    background: #eef2ff;
+    color: var(--text);
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: #fff;
+}
+
+.btn-success {
+    background: var(--success);
+    color: #fff;
+}
+
+.btn-warning {
+    background: var(--warning);
+    color: #fff;
+}
+
+.btn-excel {
+    background: var(--excel);
+    color: #fff;
+}
+
+.btn-whatsapp {
+    background: var(--whatsapp);
+    color: #fff;
+}
+
+.btn-google {
+    background: var(--google);
+    color: #fff;
+}
+
+.filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.task {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 8px;
+    align-items: flex-start;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+    position: relative;
+}
+
+.task:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.task + .task {
+    margin-top: 12px;
+}
+
+.task-content {
+    flex: 1;
+}
+
+.task-title {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.task-desc {
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+
+.task-meta {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.task-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 100px;
+}
+
+.line-through {
+    text-decoration: line-through;
+    color: #94a3b8;
+}
+
+.small {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--muted);
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.footer {
+    margin-top: 28px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.aside-actions {
+    display: grid;
+    gap: 10px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.export-options, .import-options {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.export-buttons, .import-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.share-options {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.share-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.alert-options {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.alert-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.share-input, .alert-input {
+    margin-top: 8px;
+}
+
+.share-input input, .alert-input input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-top: 4px;
+}
+
+.alert-badge {
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    background: var(--warning);
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--muted);
+}
+
+.alert-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.alert-time {
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.alert-actions {
+    display: flex;
+    gap: 6px;
+}
+
+/* تنسيقات الطباعة - محسنة لورقة واحدة */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    
+    .print-summary, .print-summary * {
+        visibility: visible;
+    }
+    
+    .print-summary {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        padding: 15mm;
+        background: white;
+        margin: 0;
+        page-break-after: avoid;
+        page-break-inside: avoid;
+    }
+    
+    .print-header {
+        text-align: center;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #333;
+        padding-bottom: 10px;
+    }
+    
+    .print-header h1 {
+        font-size: 24pt;
+        margin: 0 0 5px 0;
+        color: #000;
+    }
+    
+    .print-header p {
+        font-size: 12pt;
+        margin: 0;
+        color: #666;
+    }
+    
+    .print-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin: 20px 0;
+    }
+    
+    .print-stat-card {
+        border: 1px solid #ddd;
+        padding: 12px;
+        border-radius: 8px;
+        text-align: center;
+        page-break-inside: avoid;
+    }
+    
+    .print-stat-number {
+        font-size: 20pt;
+        font-weight: bold;
+        color: var(--accent);
+        margin: 8px 0;
+        display: block;
+    }
+    
+    .print-stat-label {
+        color: var(--muted);
+        font-size: 10pt;
+        line-height: 1.3;
+    }
+    
+    .print-date {
+        text-align: left;
+        margin-top: 25px;
+        color: var(--muted);
+        font-size: 10pt;
+        position: absolute;
+        bottom: 15mm;
+        left: 15mm;
+    }
+    
+    /* منع تقسيم الصفحة */
+    @page {
+        size: A4;
+        margin: 15mm;
+    }
+    
+    /* إخفاء رأس وتذييل الصفحة الافتراضي */
+    @page {
+        margin: 0;
+    }
+    
+    body {
+        margin: 0;
+        padding: 0;
+    }
+}
+
+@media (max-width: 880px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-grid, .form-grid-3 {
+        grid-template-columns: 1fr;
+    }
+    
+    .task {
+        flex-direction: column;
+    }
+    
+    .task-actions {
+        flex-direction: row;
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .export-buttons, .import-buttons, .share-buttons, .alert-buttons {
+        flex-direction: column;
+    }
+    
+    @media print {
+        .print-stats {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        
+        .print-stat-card {
+            padding: 8px;
+        }
+        
+        .print-stat-number {
+            font-size: 18pt;
+        }
+        
+        .print-header h1 {
+            font-size: 20pt;
+        }
+    }
+}
+
+@media (max-width: 600px) and print {
+    .print-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .print-summary {
+        padding: 10mm;
+    }
+}

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>برنامج جدول الأعمال</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <!-- مكتبة SheetJS لمعالجة ملفات Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>برنامج مدير المهام</h1>
+            <p class="lead">All Rights Reserved © ARG | Ah & Es</p>
+        </header>
+
+        <div class="grid">
+            <main>
+                <div class="card" id="formCard">
+                    <h2 id="formTitle">إضافة مهمة جديدة</h2>
+                    <form id="taskForm">
+                        <div class="form-row">
+                            <label for="title">العنوان</label>
+                            <input type="text" id="title" required />
+                        </div>
+                        
+                        <div class="form-row">
+                            <label for="desc">الوصف (اختياري)</label>
+                            <textarea id="desc" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div>
+                                <label for="due">تاريخ ووقت الاستحقاق (اختياري)</label>
+                                <input type="datetime-local" id="due" />
+                            </div>
+                            <div>
+                                <label for="priority">الأولوية</label>
+                                <select id="priority">
+                                    <option>عالية</option>
+                                    <option selected>متوسطة</option>
+                                    <option>منخفضة</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <label>إعدادات التنبيه</label>
+                            <div class="form-grid-3">
+                                <div>
+                                    <label for="alertDate">تاريخ التنبيه</label>
+                                    <input type="date" id="alertDate" />
+                                </div>
+                                <div>
+                                    <label for="alertTime">وقت التنبيه</label>
+                                    <input type="time" id="alertTime" value="09:00" />
+                                </div>
+                                <div>
+                                    <label for="alertEnabled">تفعيل التنبيه</label>
+                                    <select id="alertEnabled">
+                                        <option value="no">لا</option>
+                                        <option value="yes">نعم</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="actions">
+                            <button class="btn-accent" type="submit" id="saveBtn">
+                                <i class="fas fa-plus"></i> إضافة
+                            </button>
+                            <button type="button" id="cancelEdit" class="btn-muted" style="display:none">
+                                <i class="fas fa-times"></i> إلغاء
+                            </button>
+                            <button type="button" id="clearForm" class="btn-muted">
+                                <i class="fas fa-eraser"></i> تفريغ الحقول
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <section>
+                    <div class="stats">
+                        <div class="small">إجمالي المهام: <span id="totalCount">0</span> — معروض: <span id="visibleCount">0</span></div>
+                        <div class="small">محفوظ محلياً</div>
+                    </div>
+
+                    <div id="tasksList"></div>
+                </section>
+            </main>
+
+            <aside>
+                <div class="card">
+                    <div class="form-row">
+                        <label for="search">بحث</label>
+                        <input type="text" id="search" placeholder="ابحث في العنوان أو الوصف..." />
+                    </div>
+
+                    <div class="form-row">
+                        <label>عرض</label>
+                        <div class="filters" id="filters">
+                            <button data-filter="all" class="btn-accent">
+                                <i class="fas fa-list"></i> الكل
+                            </button>
+                            <button data-filter="today" class="btn-muted">
+                                <i class="fas fa-calendar-day"></i> اليوم
+                            </button>
+                            <button data-filter="week" class="btn-muted">
+                                <i class="fas fa-calendar-week"></i> هذا الأسبوع
+                            </button>
+                            <button data-filter="done" class="btn-muted">
+                                <i class="fas fa-check-circle"></i> المكتملة
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="export-options">
+                        <label>تصدير المهام</label>
+                        <div class="export-buttons">
+                            <button id="exportExcel" class="btn-excel">
+                                <i class="fas fa-file-excel"></i> تصدير Excel
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="import-options">
+                        <label>استيراد المهام</label>
+                        <div class="import-buttons">
+                            <input type="file" id="importExcel" accept=".xlsx, .xls" />
+                            <button id="importExcelBtn" class="btn-excel">
+                                <i class="fas fa-file-import"></i> استيراد Excel
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="alert-options">
+                        <label>إدارة التنبيهات</label>
+                        <div class="alert-buttons">
+                            <button id="viewAlerts" class="btn-warning">
+                                <i class="fas fa-bell"></i> عرض التنبيهات
+                            </button>
+                            <button id="testAlert" class="btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i> اختبار واتساب
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="aside-actions">
+                        <button id="printBtn" class="btn-muted">
+                            <i class="fas fa-print"></i> طباعة الإحصائيات
+                        </button>
+                        <button id="clearAll" class="btn-danger">
+                            <i class="fas fa-trash"></i> حذف الكل
+                        </button>
+                    </div>
+                    
+                    <div class="share-options">
+                        <label>مشاركة المهام</label>
+                        <div class="share-buttons">
+                            <button id="shareWhatsApp" class="btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i> واتساب
+                            </button>
+                            <button id="shareGoogle" class="btn-google">
+                                <i class="fab fa-google"></i> جوجل
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <footer class="footer">
+            نسخة HTML أحادية الملف — احتفظ بها محلياً أو ضعها على خادم بسيط
+        </footer>
+    </div>
+    
+    <!-- نافذة مشاركة واتساب -->
+    <div id="whatsappModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>مشاركة عبر واتساب</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="form-row">
+                <label for="whatsappNumber">رقم الهاتف (بدون +)</label>
+                <input type="text" id="whatsappNumber" placeholder="مثال: 966501234567" />
+            </div>
+            <div class="actions">
+                <button id="sendWhatsApp" class="btn-whatsapp">
+                    <i class="fab fa-whatsapp"></i> إرسال
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- نافذة مشاركة جوجل -->
+    <div id="googleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>مشاركة عبر جوجل</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="form-row">
+                <label for="googleEmail">البريد الإلكتروني</label>
+                <input type="email" id="googleEmail" placeholder="example@gmail.com" />
+            </div>
+            <div class="actions">
+                <button id="sendGoogle" class="btn-google">
+                    <i class="fab fa-google"></i> إرسال
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- نافذة إدارة التنبيهات -->
+    <div id="alertsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>إدارة التنبيهات</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="form-row">
+                <label for="alertsPhone">رقم واتساب للتنبيهات (بدون +)</label>
+                <input type="text" id="alertsPhone" placeholder="مثال: 966501234567" />
+                <div class="small">سيتم إرسال التنبيهات تلقائياً إلى هذا الرقم</div>
+            </div>
+            <div class="form-row">
+                <label>التنبيهات القادمة</label>
+                <div id="alertsList">
+                    <!-- سيتم ملؤها ديناميكياً -->
+                </div>
+            </div>
+            <div class="actions">
+                <button id="saveAlerts" class="btn-accent">
+                    <i class="fas fa-save"></i> حفظ الإعدادات
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- قسم الطباعة (مخفي بشكل افتراضي) -->
+    <div id="printSummary" class="print-summary" style="display: none;">
+        <div class="print-header">
+            <h1>تقرير إحصائيات المهام</h1>
+            <p>ملخص إجمالي المهام - برنامج جدول الأعمال</p>
+        </div>
+        
+        <div class="print-stats">
+            <div class="print-stat-card">
+                <div class="print-stat-label">إجمالي المهام</div>
+                <div class="print-stat-number" id="printTotalCount">0</div>
+                <div class="print-stat-label">جميع المهام المسجلة</div>
+            </div>
+            
+            <div class="print-stat-card">
+                <div class="print-stat-label">المهام المكتملة</div>
+                <div class="print-stat-number" id="printDoneCount">0</div>
+                <div class="print-stat-label">تم إنجازها بنجاح</div>
+            </div>
+            
+            <div class="print-stat-card">
+                <div class="print-stat-label">المهام المعلقة</div>
+                <div class="print-stat-number" id="printPendingCount">0</div>
+                <div class="print-stat-label">في انتظار الإنجاز</div>
+            </div>
+            
+            <div class="print-stat-card">
+                <div class="print-stat-label">مهام عالية الأولوية</div>
+                <div class="print-stat-number" id="printHighPriorityCount">0</div>
+                <div class="print-stat-label">تتطلب اهتماماً عاجلاً</div>
+            </div>
+            
+            <div class="print-stat-card">
+                <div class="print-stat-label">مهام اليوم</div>
+                <div class="print-stat-number" id="printTodayCount">0</div>
+                <div class="print-stat-label">مستحقة اليوم</div>
+            </div>
+            
+            <div class="print-stat-card">
+                <div class="print-stat-label">مهام هذا الأسبوع</div>
+                <div class="print-stat-number" id="printWeekCount">0</div>
+                <div class="print-stat-label">مستحقة خلال الأسبوع</div>
+            </div>
+        </div>
+        
+        <div class="print-date">
+            تم إنشاء التقرير في: <span id="printDate"></span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
